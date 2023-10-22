@@ -1,3 +1,5 @@
+import des 
+
 def text_to_binary(text):
     binary_result = ""
     for char in text:
@@ -19,24 +21,31 @@ def binary_to_text(binary_list):
         text += char
     return text
 
-if __name__ == "__main__":
-    input_text = input("Enter a string: ")
 
-    binary_chunks = text_to_binary(input_text)
-    print("Binary Chunks:")
-    for chunk in binary_chunks:
-        print(chunk)
+if __name__ == "__main__":
+    plaintext = input("Enter a text: ")
+    bin_plaintext = text_to_binary(plaintext)
+
 
     while True:
-        key_input = input("Enter a 64-bit DES key (in string format): ")
-        if len(key_input) == 8:
-            key_binary = text_to_binary(key_input)[0]
-            print("DES Key (Binary):", key_binary)
+        key = input("Enter a 64-bit DES key (in string format): ")
+        if len(key) == 8:
+            bin_key = text_to_binary(key)[0]
+            print("DES Key (Binary):", bin_key)
             break
         else:
             print("The key should be exactly 64 bits in length (8 characters).")
 
-    output_text = binary_to_text(binary_chunks)
-    print("Converted Text:", output_text)
+    round_keys = des.generateKeys(bin_key)
+
+    chipertext = ""
+    for chunk in bin_plaintext:
+        result = des.encrypt(chunk, round_keys)
+        chipertext += result
+
+    c_ct = binary_to_text(chipertext)
+    print("Converted Text:", c_ct)
+
+
 
 
