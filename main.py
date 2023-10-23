@@ -46,6 +46,13 @@ if __name__ == "__main__":
     c_ct = binary_to_text(chipertext)
     print("Converted Text:", c_ct)
 
+    bin_chipertext = text_to_binary(c_ct)
+    result_plaintext = ""
+    for chunk in bin_chipertext:
+        result = des.decrypt(chunk, round_keys)
+        result_plaintext += result
+
+    print("Back to original plain Text:", binary_to_text(result_plaintext))
 
 
 

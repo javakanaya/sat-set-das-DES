@@ -91,4 +91,8 @@ def encrypt(plaintext, round_keys):
     return cipher_text
         
 
+def decrypt(ciphertext, round_keys):
+    rev_round_keys = round_keys[::-1]
+    return encrypt(ciphertext, rev_round_keys)
+
     
