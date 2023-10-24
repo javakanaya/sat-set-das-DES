@@ -21,21 +21,39 @@ def binary_to_text(binary_list):
         text += char
     return text
 
+def binary_to_hex(binary_str):
+    hex_result = ""
+    for i in range(0, len(binary_str), 8):
+        byte = binary_str[i:i+8]  # Extract 8 bits at a time
+        decimal_value = int(byte, 2)
+        hex_value = format(decimal_value, '02X')  # Ensure each hex digit has 2 digits
+        hex_result += hex_value + ' '
+    
+    # Remove the trailing space
+    hex_result = hex_result.rstrip()
+    
+    return hex_result
 
 if __name__ == "__main__":
-    plaintext = input("Enter a text: ")
-    bin_plaintext = text_to_binary(plaintext)
+    while True:
+        plaintext = input("Enter a 64-bit binary string: ")
+        if len(plaintext) % 8 == 0:
+            break
+        else:
+            print("Input is not a valid 64-bit binary string. Please try again.")
 
+    bin_plaintext = text_to_binary(plaintext)
 
     while True:
         key = input("Enter a 64-bit DES key (in string format): ")
         if len(key) == 8:
-            bin_key = text_to_binary(key)[0]
-            print("DES Key (Binary):", bin_key)
             break
         else:
             print("The key should be exactly 64 bits in length (8 characters).")
 
+    bin_key = text_to_binary(key)[0]
+    print("DES Key (Binary):", bin_key)
+    print("DES Key (Hex):", binary_to_hex(bin_key))
     round_keys = des.generateKeys(bin_key)
 
     chipertext = ""
@@ -44,7 +62,9 @@ if __name__ == "__main__":
         chipertext += result
 
     c_ct = binary_to_text(chipertext)
+    h_ct = binary_to_hex(chipertext)
     print("Converted Text:", c_ct)
+    print("Converted Text (in hex):", h_ct)
 
     bin_chipertext = text_to_binary(c_ct)
     result_plaintext = ""
